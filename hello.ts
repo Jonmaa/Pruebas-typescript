@@ -397,3 +397,32 @@ function draw(rectan: Colorful & Rectangle){
 let aaa = draw({color: "blue", sideA: 23, sideB:11})
 console.log(aaa)
 
+//generic object types
+interface Box<Type> {
+  contents: Type;
+}
+
+let boxString: Box<string>
+let boxNumber: Box<number> 
+
+
+//ReadonlyArray<string> === readonly string[]
+function doStuff(values: ReadonlyArray<string>){
+  const copy = values.slice()
+  console.log(`The first value is ${values[0]}`)
+
+  // values.push("hello") ERROR cuz you cant push values to a readonly array
+}
+
+//You can assign an array to a readonly array but not otherwise, they cannot be assigned to the usual ones
+
+
+//tuples
+// type StringNumberBooleans = [string, number, ...boolean[]];
+// type StringBooleansNumber = [string, ...boolean[], number];
+// type BooleansStringNumber = [...boolean[], string, number];
+
+// StringNumberBooleans describes a tuple whose first two elements are string and number respectively, but which may have any number of booleans following.
+// StringBooleansNumber describes a tuple whose first element is string and then any number of booleans and ending with a number.
+// BooleansStringNumber describes a tuple whose starting elements are any number of booleans and ending with a string then a number.
+
