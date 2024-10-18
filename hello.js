@@ -145,6 +145,7 @@ console.log(getArea(x));
 let y = { kind: "square", sideLength: 4 };
 console.log(getArea(y));
 //MORE ON FUNCTIONS
+//function type expressions
 function greeter(fn) {
     fn("Jellow, Wolrd");
 }
@@ -152,3 +153,88 @@ function printToConsole(s) {
     console.log(s);
 }
 greeter(printToConsole);
+//call signatures, no funciona XDDD
+// type DescribableFunction = {
+//   description: string;
+//   (someArg: number): boolean;
+// };
+// function doSomething(fn: DescribableFunction) {
+//   console.log(fn.description + " returned " + fn(6));
+// } 
+// function myFunc(someArg: number) {
+//   return someArg > 3;
+// }
+// myFunc.description = "default description";
+// doSomething(myFunc);
+function firstElement(arr) {
+    if (arr[0] !== undefined) {
+        return arr[0];
+    }
+}
+// s is of type 'string'
+const s = firstElement(["a", "b", "c"]);
+console.log(s);
+// n is of type 'number'
+const n = firstElement([1, 2, 3]);
+console.log(n);
+// u is of type undefined
+const u = firstElement([]);
+console.log(u);
+//constraints
+function longest(a, b) {
+    if (a.length >= b.length) {
+        return a;
+    }
+    else {
+        return b;
+    }
+}
+// longerArray is of type 'number[]'
+const longerArray = longest([1, 2], [1, 2, 3]);
+console.log(longerArray);
+// longerString is of type 'alice' | 'bob'
+const longerString = longest("alice", "bob");
+console.log(longerString);
+// Error Example! Numbers don't have a 'length' property
+//const notOK = longest(10, 100);
+//optional parameters
+function f(n) {
+    if (n != undefined) {
+        console.log(n.toFixed()); // 0 arguments
+        console.log(n.toFixed(3)); // 1 argument
+    }
+}
+f();
+f(10);
+f(2.6546546);
+function makeDate(mOrTimestamp, d, y) {
+    if (d !== undefined && y !== undefined) {
+        return new Date(y, mOrTimestamp, d);
+    }
+    else {
+        return new Date(mOrTimestamp);
+    }
+}
+const d1 = makeDate(12345678);
+const d2 = makeDate(5, 5, 5);
+console.log(d1, "\n" + d2);
+function len(x) {
+    return x.length;
+}
+//Good cuz both of them have the length property, not a callable function with a different type
+console.log(len(""), len([0]));
+// function len(x: any[] | string) {
+//   return x.length;
+// }
+// this would be a much easier implementation
+//rest parameters and arguments
+function multiply(n, ...m) {
+    return m.map((x) => n * x);
+}
+// 'a' gets value [10, 20, 30, 40]
+const a = multiply(10, 1, 2, 3, 4);
+console.log(a);
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+arr1.push(...arr2);
+console.log(arr1);
