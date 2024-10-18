@@ -299,3 +299,101 @@ arr1.push(...arr2);
 
 console.log(arr1)
 
+//OBJECT TYPES
+//readonly properties
+interface Home {
+  readonly resident: { name: string; age: number };
+}
+ 
+function visitForBirthday(home: Home) {
+  // We can read and update properties from 'home.resident'.
+  console.log(`Happy birthday ${home.resident.name}!`);
+  home.resident.age++;
+}
+
+let NYCityHome:Home = {resident:{name: "Victor", age:45}}
+console.log(NYCityHome.resident.age)
+visitForBirthday(NYCityHome)
+console.log(NYCityHome.resident.age)
+
+//Cannot change resident cuz its a readonly property, but we can change the values within it
+
+interface Person {
+  name: string;
+  age: number;
+}
+ 
+interface ReadonlyPerson {
+  readonly name: string;
+  readonly age: number;
+}
+ 
+let writablePerson: Person = {
+  name: "Person McPersonface",
+  age: 42,
+};
+ 
+// works
+let readonlyPerson: ReadonlyPerson = writablePerson;
+//now the readonly atributtes are changeable
+ 
+console.log(readonlyPerson.age); // prints '42'
+writablePerson.age++;
+console.log(readonlyPerson.age); // prints '43'
+
+//excess property checks
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+ 
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+ 
+let mySquare = createSquare({ color: "red", width: 100 });
+console.log(mySquare)
+
+//extending types
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+ 
+interface AddressWithNumber extends BasicAddress {
+  Number: string;
+}
+
+interface Colorful {
+  color: string;
+}
+ 
+interface Rectangle {
+  sideA: number;
+  sideB: number
+}
+ 
+interface ColorfulRectangle extends Colorful, Rectangle {}
+ 
+const cr: ColorfulRectangle = {
+  color: "red",
+  sideA: 42,
+  sideB: 28
+};
+
+type ColorfulRectangle2 = Colorful & Rectangle
+
+function draw(rectan: Colorful & Rectangle){
+  console.log(`Color was ${rectan.color}`)
+  console.log(`Sides where ${rectan.sideA} and ${rectan.sideB}`)
+}
+
+let aaa = draw({color: "blue", sideA: 23, sideB:11})
+console.log(aaa)
+

@@ -238,3 +238,41 @@ const arr1 = [1, 2, 3];
 const arr2 = [4, 5, 6];
 arr1.push(...arr2);
 console.log(arr1);
+function visitForBirthday(home) {
+    // We can read and update properties from 'home.resident'.
+    console.log(`Happy birthday ${home.resident.name}!`);
+    home.resident.age++;
+}
+let NYCityHome = { resident: { name: "Victor", age: 45 } };
+console.log(NYCityHome.resident.age);
+visitForBirthday(NYCityHome);
+console.log(NYCityHome.resident.age);
+let writablePerson = {
+    name: "Person McPersonface",
+    age: 42,
+};
+// works
+let readonlyPerson = writablePerson;
+//now the readonly atributtes are changeable
+console.log(readonlyPerson.age); // prints '42'
+writablePerson.age++;
+console.log(readonlyPerson.age); // prints '43'
+function createSquare(config) {
+    return {
+        color: config.color || "red",
+        area: config.width ? config.width * config.width : 20,
+    };
+}
+let mySquare = createSquare({ color: "red", width: 100 });
+console.log(mySquare);
+const cr = {
+    color: "red",
+    sideA: 42,
+    sideB: 28
+};
+function draw(rectan) {
+    console.log(`Color was ${rectan.color}`);
+    console.log(`Sides where ${rectan.sideA} and ${rectan.sideB}`);
+}
+let aaa = draw({ color: "blue", sideA: 23, sideB: 11 });
+console.log(aaa);
