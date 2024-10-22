@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 function greet(person, date) {
     console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -284,11 +285,131 @@ function doStuff(values) {
     console.log(`The first value is ${values[0]}`);
     // values.push("hello") ERROR cuz you cant push values to a readonly array
 }
-//You can assign an array to a readonly array but not otherwise, they cannot be assigned to the usual ones
-//tuples
-// type StringNumberBooleans = [string, number, ...boolean[]];
-// type StringBooleansNumber = [string, ...boolean[], number];
-// type BooleansStringNumber = [...boolean[], string, number];
-// StringNumberBooleans describes a tuple whose first two elements are string and number respectively, but which may have any number of booleans following.
-// StringBooleansNumber describes a tuple whose first element is string and then any number of booleans and ending with a number.
-// BooleansStringNumber describes a tuple whose starting elements are any number of booleans and ending with a string then a number.
+function createLabel(nameOrId) {
+    console.log("unimplemented");
+    let a = { name: "a" };
+    return a;
+}
+// function createLabel2<T extends number | string>(idOrName: T): NameOrId<T> {
+//   throw "unimplemented"
+// }
+let aa = createLabel("typescript");
+let b = createLabel(2.8);
+let c = createLabel(Math.random() ? "hello" : 42);
+//CLASSES
+class Point {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+    }
+    scale(n) {
+        this.x *= n;
+        this.y *= n;
+    }
+}
+const pt = new Point();
+pt.x = 0;
+pt.y = 14;
+console.log(`${pt.x}, ${pt.y}`);
+class Greeter {
+    constructor(otherName) {
+        this.name = "world";
+        if (otherName !== undefined) {
+            this.name = otherName;
+        }
+    }
+}
+const g = new Greeter();
+//g.name = "also not ok"
+// cannot assign this because its a readonly property
+class Point2 {
+    constructor(x, y = 0) {
+        this.x = 0;
+        this.y = 0;
+        //code logic here
+    }
+}
+//supercalls
+class Base {
+    constructor() {
+        this.k = 4;
+    }
+}
+class Derived extends Base {
+    constructor() {
+        super(); //el super tiene que estar por encima
+        console.log(this.k);
+    }
+}
+//getters and setters
+class C {
+    constructor() {
+        this._length = 7;
+    }
+    get length() {
+        return this._length;
+    }
+    set length(value) {
+        this._length = value;
+    }
+}
+class Sonar {
+    ping() {
+        console.log("ping!");
+    }
+}
+class Animal {
+    move() {
+        console.log("Moving along!");
+    }
+}
+class Dog extends Animal {
+    woof(times) {
+        for (let i = 0; i < times; i++) {
+            console.log("woof!");
+        }
+    }
+}
+const d = new Dog();
+// Base class method
+d.move();
+// Derived class method
+d.woof(3);
+class Base2 {
+    greet() {
+        console.log("Hello, world!");
+    }
+}
+class Derived2 extends Base2 {
+    greet(name) {
+        if (name === undefined) {
+            super.greet();
+        }
+        else {
+            console.log(`Hello, ${name.toUpperCase()}`);
+        }
+    }
+}
+const d11 = new Derived2();
+d11.greet();
+d11.greet("reader");
+class MySafe {
+    constructor() {
+        this.secretKey = 12345;
+    }
+}
+let s1 = new MySafe();
+// Not allowed during type checking
+//console.log(s1.secretKey);
+// OK
+console.log(s1["secretKey"]);
+function moveRight(point) {
+    point.x += 5;
+}
+const point = new Point();
+moveRight(point);
+point.x; // => 8
+console.log(point.x);
+const math_js_1 = require("./math.js");
+console.log(math_js_1.pi);
+const absolutePhi = (0, math_js_1.absolute)(math_js_1.phi);

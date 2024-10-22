@@ -426,3 +426,288 @@ function doStuff(values: ReadonlyArray<string>){
 // StringBooleansNumber describes a tuple whose first element is string and then any number of booleans and ending with a number.
 // BooleansStringNumber describes a tuple whose starting elements are any number of booleans and ending with a string then a number.
 
+//CONDITIONAL TYPING
+
+interface Mammal {
+  live():void
+}
+
+interface Dog extends Mammal{
+  woof_woof():void
+}
+
+type Prueba1 = Dog extends Mammal ? "yes" : "no"
+
+type Prueba2 = RegExp extends Mammal ? "yes" : "no"
+
+//we can simplify this into -->
+interface IdLabel {
+  id: number /* some fields */;
+}
+interface NameLabel {
+  name: string /* other fields */;
+}
+ 
+function createLabel(id: number): IdLabel;
+function createLabel(name: string): NameLabel;
+function createLabel(nameOrId: string | number): IdLabel | NameLabel;
+function createLabel(nameOrId: string | number): IdLabel | NameLabel {
+   console.log("unimplemented")
+   let a : NameLabel = {name:"a"}
+   return a
+}
+
+//this
+type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabel
+
+// function createLabel2<T extends number | string>(idOrName: T): NameOrId<T> {
+//   throw "unimplemented"
+// }
+
+let aa = createLabel("typescript")
+let b = createLabel(2.8)
+let c = createLabel(Math.random() ? "hello" : 42)
+
+type Flatten<T> = T extends any[] ? T[number] : T;
+ 
+// Extracts out the element type.
+type Str = Flatten<string[]>;
+ 
+// Leaves the type alone.
+type Num = Flatten<number>;
+
+//same as above but in a single line
+type Flatten2<Type> = Type extends Array<infer Item> ? Item : Type
+
+//CLASSES
+class Point {
+   x:number
+   y:number
+
+   constructor(){
+     this.x = 0
+     this.y = 0
+   }
+
+   scale(n:number): void{
+     this.x *= n
+     this.y *= n
+   }
+}
+
+const pt = new Point()
+pt.x = 0
+pt.y = 14
+
+console.log(`${pt.x}, ${pt.y}`)
+
+
+class Greeter {
+  readonly name: string = "world"
+
+  constructor(otherName?:string){
+    if (otherName !== undefined){
+      this.name = otherName
+    }
+  }
+
+  // err(){
+  //   this.name = "not ok"
+  // }
+  // cannot assign this because its a readonly property
+}
+
+const g = new Greeter()
+//g.name = "also not ok"
+// cannot assign this because its a readonly property
+
+class Point2 {
+  x:number = 0
+  y:number = 0
+
+  constructor(x:number, y:number);
+  constructor(xy: string);
+  constructor(x:string | number, y:number = 0){
+    //code logic here
+  }
+}
+
+
+//supercalls
+class Base{
+  k=4
+}
+
+class Derived extends Base{
+  constructor(){
+    super() //el super tiene que estar por encima
+    console.log(this.k)
+  }
+}
+
+//getters and setters
+class C {
+  _length = 7
+  
+  get length() {
+    return this._length
+  }
+
+  set length(value){
+    this._length = value
+  }
+}
+
+//si solo hay get y no set, la propiedad es automaticamente readonly
+
+
+
+//a partir de la -v 4.3, problemas instalando la última versión
+// class Thing {
+//   _size = 0;
+ 
+//   get size(): number {
+//     return this._size;
+//   }
+ 
+//   set size(value: string | number | boolean) {
+//     let num = Number(value);
+ 
+//     // Don't allow NaN, Infinity, etc
+ 
+//     if (!Number.isFinite(num)) {
+//       this._size = 0;
+//       return;
+//     }
+ 
+//     this._size = num;
+//   }
+// }
+
+
+
+interface Pingable {
+  ping():void
+}
+
+class Sonar implements Pingable{
+  ping(){
+    console.log("ping!")
+  }
+}
+
+
+class Animal {
+  move() {
+    console.log("Moving along!");
+  }
+}
+ 
+class Dog extends Animal {
+  woof(times: number) {
+    for (let i = 0; i < times; i++) {
+      console.log("woof!");
+    }
+  }
+}
+ 
+const d = new Dog();
+// Base class method
+d.move();
+// Derived class method
+d.woof(3);
+
+
+class Base2 {
+  greet() {
+    console.log("Hello, world!");
+  }
+}
+ 
+class Derived2 extends Base2 {
+  greet(name?: string) {
+    if (name === undefined) {
+      super.greet();
+    } else {
+      console.log(`Hello, ${name.toUpperCase()}`);
+    }
+  }
+}
+ 
+const d11 = new Derived2();
+d11.greet();
+d11.greet("reader");
+
+
+class MySafe {
+  private secretKey = 12345;
+}
+ 
+let s1 = new MySafe();
+ 
+// Not allowed during type checking
+//console.log(s1.secretKey);
+ 
+// OK
+console.log(s1["secretKey"])
+
+
+// class FileSystemObject {
+//   isFile(): this is FileRep {
+//     return this instanceof FileRep;
+//   }
+//   isDirectory(): this is Directory {
+//     return this instanceof Directory;
+//   }
+//   isNetworked(): this is Networked & this {
+//     return this.networked;
+//   }
+//   constructor(public path: string, private networked: boolean) {}
+// }
+ 
+// class FileRep extends FileSystemObject {
+//   constructor(path: string, public content: string) {
+//     super(path, false);
+//   }
+// }
+ 
+// class Directory extends FileSystemObject {
+//   children: FileSystemObject[];
+// }
+ 
+// interface Networked {
+//   host: string;
+// }
+ 
+// const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");
+ 
+// if (fso.isFile()) {
+//   fso.content;
+  
+// } else if (fso.isDirectory()) {
+//   fso.children;
+
+// } else if (fso.isNetworked()) {
+//   fso.host;
+// }
+
+//constructor signatures
+type PointInstance = InstanceType<typeof Point>
+ 
+function moveRight(point: PointInstance) {
+  point.x += 5;
+}
+
+const point = new Point();
+moveRight(point);
+point.x; // => 8
+console.log(point.x)
+
+
+//MODULES
+import type {Cat, Dog as Doggie} from "./animal.js"
+type Animals = Cat | Doggie
+
+import {phi, pi, absolute} from "./math.js"
+console.log(pi)
+const absolutePhi = absolute(phi)
